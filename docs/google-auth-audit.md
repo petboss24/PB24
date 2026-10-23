@@ -142,3 +142,20 @@ Savepoints: antes `1792085576162` · Login/backend `1792085680814` · después `
   documentado.
 - Vincular Google desde Ajustes: mejora futura.
 - Sign in with Apple antes de publicar en iOS (guía 4.8).
+
+## Corrección 2026-10-23: botones no interactivos
+
+- Síntoma: Google (Login y Sign Up) y el botón Apple de Login no reaccionaban
+  en Preview Web ni en Bubble Go; los logs no tenían ni un evento de esos
+  workflows. El botón nativo de Apple de Sign Up sí se ejecutaba.
+- Causa (error introducido en la implementación anterior): en mobile, la
+  propiedad `button_disabled` significa **"This element isn't interactive"**
+  (el MCP la muestra como "Make interactive"). Estaba a `yes` en
+  `btnLoginGoogle` (`cmivT`), `btnSignupGoogle` (`cmjLs`) y el botón Apple de
+  Login (`cmjCf`).
+- Arreglo: `button_disabled = no` en los tres. Savepoints: antes
+  `1792783621352`, después `1792783649358`. Bubble: sin errores nuevos.
+- Apple (Login y Sign Up) y `auth-apple-complete` los añadió otra sesión/persona;
+  no se revisó su lógica aquí.
+- TestFlight usa **Live**: hay que desplegar el arreglo a Live; si los botones
+  siguen sin verse, generar un build nuevo de iOS.
