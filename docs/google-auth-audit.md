@@ -159,3 +159,20 @@ Savepoints: antes `1792085576162` · Login/backend `1792085680814` · después `
   no se revisó su lógica aquí.
 - TestFlight usa **Live**: hay que desplegar el arreglo a Live; si los botones
   siguen sin verse, generar un build nuevo de iOS.
+
+## 2026-10-25: "inicia sesión con Google pero no avanza"
+
+- Logs de **Live** (TestFlight), 23 oct: `signupWithGoogle` → *Signup/login
+  with Google* falla con **"This email address is already registered:
+  js.grisales03@gmail.com"**. Ese email ya tiene cuenta con contraseña en Live.
+- Confirmado: **Bubble no vincula** una cuenta de contraseña con Google por
+  email; rechaza el login. Coincide con la decisión 2 (bloquear), pero la
+  pantalla solo mostraba el error genérico (o nada) y parecía "no avanzar".
+- Arreglo (test): los `OnError` de Login (`cnBsa`) y Sign Up (`cnBtL`) ponen
+  `googleBlocked` si el mensaje de error contiene "already registered" (muestra
+  el aviso de "ya tienes cuenta con contraseña") y `googleError` en otro caso.
+  Savepoints: antes `1792966231713`, después `1792966277661`.
+- Apple en Live: la acción termina sin sesión y sin error (cancelado o
+  configuración); pendiente de revisar.
+- Para probar un login real con Google hay que usar una cuenta cuyo email **no**
+  exista en la base de datos de esa versión (Live y test tienen datos distintos).
