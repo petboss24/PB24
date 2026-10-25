@@ -191,3 +191,31 @@ Savepoints: antes `1792085576162` · Login/backend `1792085680814` · después `
   elemento. `cmjCf` borrado. Sign Up: `signupWithApple` (`cnBtV`).
 - Savepoints: antes `1792966384298`, después (ver changelog). Sin errores nuevos.
 - Pendiente: que Apple inicie sesión (en Live vuelve sin sesión ni error).
+
+## 2026-10-25: arreglos de Apple (backend y workflows)
+
+Savepoint antes: `1792966745452`.
+
+- **Backend `auth-apple-complete` (`cnBtw`)**: condición `logged in` **y
+  `osRole` vacío` (solo usuarios recién creados por Apple). Antes marcaba
+  `appleAccount` y **`emailConfirmation = yes` a cualquier usuario con sesión**
+  (salto de verificación de email).
+- Perfil (`cnBuA`): nombre = `apple_first_name` *defaulting to* parte del email
+  antes de `@`; apellido = `apple_last_name` (Apple solo los envía la primera vez).
+- **Login `loginWithApple` (`cnBuB`)** y **Sign Up `signupWithApple` (`cnBtV`)**:
+  - Condición del evento: `googleLoading` es no (sin doble toque).
+  - Paso inicial: loading = sí, error/blocked = no; loading = no tras el backend.
+  - `OnError` nuevos: `loginWithAppleError` (`cnBvu`) y `signupWithAppleError`
+    (`cnBvw`), con el mismo tratamiento de "already registered" que Google.
+- Textos neutros: `txtGoogleError` → "We couldn't sign you in/up. Please try
+  again or use your email."; botón Google al cargar → "Connecting…" (el estado
+  de carga es compartido entre Google y Apple).
+- Sin errores nuevos en Bubble. **Sin probar en dispositivo.**
+
+### Configuración de Apple (manual, no verificable desde Bubble)
+- Logs de Live (24 oct): Apple vuelve a la app sin intercambio de token con
+  Apple ni sesión → hoja cancelada o build/IDs mal configurados.
+- Comprobar: App ID con *Sign in with Apple*; Services ID con dominio
+  `petboss24.com` y return URL `https://petboss24.com/api/1.1/oauth_redirect`;
+  Key `.p8` con Sign in with Apple; mismos valores en Bubble → Plugins → Apple;
+  build de iOS nuevo si se activó después del último build.
