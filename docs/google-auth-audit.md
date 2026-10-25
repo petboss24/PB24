@@ -176,3 +176,18 @@ Savepoints: antes `1792085576162` · Login/backend `1792085680814` · después `
   configuración); pendiente de revisar.
 - Para probar un login real con Google hay que usar una cuenta cuyo email **no**
   exista en la base de datos de esa versión (Live y test tienen datos distintos).
+
+## 2026-10-25: botón nativo de Apple en Login y Sign Up
+
+- Antes: Login usaba un `Button` de Bubble con icono `fa-apple` (`cmjCf`);
+  Sign Up, el elemento nativo `AppleSignInButton` (`cnBtP`). El botón viejo de
+  Sign Up (`cmjLx`) ya no existía.
+- Ahora: `AppleSignInButton` en ambos — `btnLoginApple` (`cnBvl`, alto 60 como
+  Google en Login) y `btnSignupApple` (`cnBtP`, alto 55 como Google en Sign Up).
+  Estilo blanco, "Continue with Apple", radio 14, centrado. Orden: Google →
+  Apple → texto de error.
+- El workflow existente `loginWithApple` (`cnBuB`) apunta al botón nuevo (sin
+  cambiar su lógica); se borró el evento vacío que Bubble crea al añadir el
+  elemento. `cmjCf` borrado. Sign Up: `signupWithApple` (`cnBtV`).
+- Savepoints: antes `1792966384298`, después (ver changelog). Sin errores nuevos.
+- Pendiente: que Apple inicie sesión (en Live vuelve sin sesión ni error).
