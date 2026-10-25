@@ -85,9 +85,14 @@ Plan aprobado por etapas (Next en pasos 1-2, cierre de sesión siempre a
 
 ## 🟠 Google Login (2026-10-14, ver `google-login.md`)
 
-- [ ] Google Cloud: pantalla de consentimiento, cliente *Web application*,
-      redirect URIs copiadas de Bubble.
-- [ ] Bubble → Plugins → Google: Client ID y Client Secret.
+- [x] Google Cloud: cliente *Web application* "Google Login" con redirect URIs
+      `https://petboss24.com/api/1.1/oauth_redirect` y
+      `https://petboss24.com/version-test/api/1.1/oauth_redirect` (2026-10-15).
+- [x] Bubble → Plugins → Google: Client ID y Client Secret (2026-10-15; el
+      aviso "fill your app id and secret" ya no aparece).
+- [x] Google en Sign Up + bloqueo de cuentas con contraseña (2026-10-15).
+- [ ] Pruebas L1-L5, S1-S5, C1-C4 de `google-auth-audit.md`.
+- [ ] Vincular Google desde Ajustes (cuentas con contraseña).
 - [ ] Reemplazar el icono por el logo "G" oficial de Google.
 - [ ] Probar en dispositivo los casos A-D (sobre todo el email igual a una
       cuenta con contraseña).
@@ -96,9 +101,16 @@ Plan aprobado por etapas (Next en pasos 1-2, cierre de sesión siempre a
 
 ## 🔴 Seguridad
 
-- [ ] **Verificar el webhook `checkout_session_completed`** contra Stripe
-      (Retrieve Checkout Session por ID) antes de confirmar la reserva. Revisar
-      lo mismo en `webhook_account_enabled` / `webhook_account_restricted`.
+- [x] Renovar la clave secreta de Stripe de test (2026-10-14).
+- [x] Webhook `checkout_session_completed` verificado contra Stripe (2026-10-14).
+- [ ] Probar un pago de test de punta a punta (tarjeta 4242) tras el cambio del webhook.
+- [ ] Webhook: comparar `amount_total` e idempotencia ante reintentos.
+- [x] Open requests solo para petsitters verificados (2026-10-14).
+- [x] Autobinding de `dgRequest` eliminado (2026-10-14).
+- [ ] Pruebas de autorización de Fase 1 (10 casos en `security-phase1.md`).
+- [ ] `create-transaction`: calcular importe/fee en servidor, no desde el cliente.
+- [ ] Revisar `webhook_account_enabled` / `webhook_account_restricted`
+      (misma verificación contra Stripe).
 - [ ] **Probar las privacy rules** con un customer y un petsitter de prueba
       (checklist en `privacy-rules.md`).
 - [ ] Rellenar `address.authorizedPetsitters` en reservas ya pagadas, si hay

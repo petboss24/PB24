@@ -4,7 +4,43 @@ Todos los cambios se hicieron en **Main (test)**. Nada se desplegó a Live desde
 estas sesiones. Para revertir, usar el savepoint indicado (Version control en el
 editor, o `restore_savepoint` con el timestamp).
 
+## 2026-10-15
+
+### Google Authentication en Login y Sign Up
+- Savepoints: antes `1792085576162`, después `1792085774217`.
+- Backend `auth-google-complete` solo inicializa usuarios nuevos de Google.
+- Login y Sign Up bloquean (cierran sesión + mensaje) cuentas existentes con
+  contraseña: no se vincula solo por email.
+- Sign Up: botón Continue with Google visible con workflow `signupWithGoogle`.
+- Detalle y pruebas pendientes en `docs/google-auth-audit.md`. **Sin probar.**
+
+### Google Login: credenciales configuradas
+- Hecho por el usuario: cliente OAuth *Web application* en Google Cloud
+  (redirect URIs de Live y version-test) y Client ID/secret en Plugins → Google.
+- Bubble: desaparece el aviso "fill your app id and secret"; quedan los 6
+  errores preexistentes. **Sin probar todavía con un login real.**
+
 ## 2026-10-14
+
+### Seguridad — webhook de pago verificado con Stripe
+- Savepoint antes: `1792009923616` · después: `1792009984623`
+- Claves de Stripe de test renovadas por el usuario; `Retrieve Checkout Session` inicializada.
+- `checkout_session_completed`: paso 1 consulta la sesión a Stripe, paso 2
+  termina si no está `complete`/`paid`; la transacción se actualiza con datos
+  de Stripe. Mismos errores preexistentes en Bubble. **Sin probar con un pago real.**
+
+### Seguridad — Fase 1 del plan de tracking
+- Savepoint antes: **"Antes de Fase 1 seguridad (privacy rules + webhook)"** — `1792008694212`
+- Savepoint después: **"Después de Fase 1 seguridad: open-requests verificado, autobinding dgRequest vacío, call Retrieve Checkout Session (sin inicializar)"** — `1792009047530`
+- `dgRequest` › regla *Open requests for petsitters*: solo petsitters con
+  verificación **Enabled**.
+- `dgRequest` › reglas *Customer* y *Applied or assigned petsitter*:
+  autobinding vacío (no hay inputs que lo usen; las ediciones van por workflows).
+- API Connector › Stripe: llamada nueva **Retrieve Checkout Session**
+  (`cnBse`), **sin inicializar**: la clave de Stripe de test está caducada
+  (`401 api_key_expired`). Webhook sin cambios todavía.
+- Bubble: los mismos 6 errores preexistentes + aviso de Google. **Sin probar
+  con cuentas reales.** Detalle en `docs/security-phase1.md`.
 
 ### Google Login preparado (sin credenciales)
 - Savepoint antes: **"Antes de preparar Google Login (authLogin + backend auth-google-complete)"** — `1792005527109`

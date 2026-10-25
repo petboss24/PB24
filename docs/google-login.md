@@ -151,6 +151,10 @@ distintas; las dos tienen que estar en *Authorized redirect URIs*. En modo
 
 ## Pruebas
 
+> 2026-10-15: credenciales configuradas por el usuario (Google Cloud + plugin
+> Google en Bubble). Bubble ya no muestra el aviso de app id/secret. Las pruebas
+> con credenciales siguen **pendientes**.
+
 | # | Prueba | Sin credenciales | Con credenciales |
 |---|---|---|---|
 | 1 | Usuario de Google ya existente entra | — | Llega a su pestaña; no se crea otro usuario ni perfil |
